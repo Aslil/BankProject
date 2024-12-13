@@ -6,46 +6,46 @@ import warnings
 warnings.filterwarnings("ignore")
 
 # Streamlit başlığı
-st.title('📊 Banka Pazarlama Tahmin Uygulaması')
+st.title('📊 Bank Subscription Prediction App 📊')
 
 # Kullanıcıdan giriş alınması
-age = st.number_input('Lütfen yaşınızı girin:', step=1)
+age = st.number_input('Please enter your age:', step=1)
 
 job = st.selectbox(
-    'Lütfen mesleğinizi seçin:',
-    ('admin.', 'blue-collar', 'entrepreneur', 'housemaid', 'management', 'retired',
+    'Please select your job:',
+    ('admin', 'blue-collar', 'entrepreneur', 'housemaid', 'management', 'retired',
      'self-employed', 'services', 'student', 'technician', 'unemployed', 'unknown')
 )
 
-marital = st.selectbox('Medeni durumunuzu seçin:', ('married', 'single', 'divorced'))
+marital = st.selectbox('Please select your marital status:', ('married', 'single', 'divorced'))
 
-education = st.selectbox('Eğitim durumunuzu seçin:',
-                          ('basic.4y', 'basic.6y', 'basic.9y', 'high.school', 'illiterate',
-                           'professional.course', 'university.degree', 'unknown'))
+education = st.selectbox('Please select your education level:',
+                          ('basic', 'high school', 'illiterate',
+                           'professional course', 'university degree', 'unknown'))
 
-housing = st.selectbox('Konut krediniz var mı?', ('yes', 'no', 'unknown'))
+housing = st.selectbox('Select if you have a housing loan', ('yes', 'no', 'unknown'))
 
-loan = st.selectbox('Kişisel krediniz var mı?', ('yes', 'no', 'unknown'))
+loan = st.selectbox('Select if you have a personal loan?', ('yes', 'no', 'unknown'))
 
-day_of_week = st.selectbox('Son iletişim gününüzü seçin:',
+day_of_week = st.selectbox('Select your last contact day of the week:',
                            ('mon', 'tue', 'wed', 'thu', 'fri'))
 
-contact = st.selectbox('İletişim türünü seçin:', ('cellular', 'telephone'))
+contact = st.selectbox('Select your contact communication type:', ('cellular', 'telephone'))
 
-month = st.selectbox('Son iletişim ayını seçin:',
+month = st.selectbox('Select your last contact month:',
                       ('jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'))
 
-duration = st.number_input('Son görüşme süresini (saniye) girin:', step=1)
+duration = st.number_input('Enter your last contact duration in seconds:', step=1)
 
-campaign = st.number_input('Kampanya sırasında yapılan arama sayısı:', step=1)
+campaign = st.number_input('Enter the number of calls made during the campaign:', step=1)
 
-cons_price_idx = st.number_input('Tüketici fiyat endeksini girin:')
+cons_price_idx = st.number_input('Enter the consumer price index:')
 
-cons_conf_idx = st.number_input('Tüketici güven endeksini girin:')
+cons_conf_idx = st.number_input('Enter the consumer confidence index:')
 
-euribor3m = st.number_input('Euribor 3 aylık oranını girin:')
+euribor3m = st.number_input('Enter Euribor 3-month rate:')
 
-nr_employed = st.number_input('Çalışan sayısını girin:')
+nr_employed = st.number_input('Enter the number of employees:')
 
 # Kullanıcıdan alınan girdilerle bir DataFrame oluşturma
 input_data = pd.DataFrame({
@@ -71,27 +71,27 @@ model_path = 'tuned_best_model.pkl'
 try:
     model = pickle.load(open(model_path, 'rb'))
 except FileNotFoundError:
-    st.error('Model dosyası bulunamadı. Lütfen doğru yolu kontrol edin.')
+    st.error('Model file not found. Please check the correct path.')
     st.stop()
 
 # Tahmin yapma
-if st.button('Tahmin Yap'):
+if st.button('Make Prediction'):
     try:
         # Tahmin yapılmadan önce veriyi ve çıktıyı yazdır
-        st.write("Giriş verisi:")
+        st.write("Input data:")
         st.write(input_data)  # Kullanıcıdan alınan veriyi ekranda gösterir
         
         # Model tahmini
         prediction = model.predict(input_data)
         
         # Tahmin edilen sonucu yazdır
-        st.write("Model Çıktısı:")
+        st.write("Model Output:")
         st.write(prediction[0])
         
         # Kullanıcıya sonucu göster
         if prediction[0] == 'yes':
-            st.success('Evet! Müşteri bir vadeli mevduata abone olur.')
+            st.success('Yes! The client subscribes to a time deposit.')
         else:
-            st.error('Hayır! Müşteri bir vadeli mevduata abone olmaz.')
+            st.error('No! The client does not subscribe to a time deposit.')
     except Exception as e:
-        st.error(f'Tahmin sırasında bir hata oluştu: {e}')
+        st.error(f'An error occurred during prediction: {e}')
