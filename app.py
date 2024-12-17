@@ -39,11 +39,11 @@ duration = st.number_input('Enter your last contact duration in seconds:', step=
 
 campaign = st.number_input('Enter the number of calls made during the campaign:', step=1)
 
-cons_price_idx = st.number_input('Enter the consumer price index:')
+emp_var_rate = st.number_input('Enter the employment variation rate :')
 
-cons_conf_idx = st.number_input('Enter the consumer confidence index:')
-
-euribor3m = st.number_input('Enter Euribor 3-month rate:')
+cons_price_idx = st.number_input('Enter the consumer price index:', format="%.3f", step=0.001)
+cons_conf_idx = st.number_input('Enter the consumer confidence index:', format="%.3f", step=0.001)
+euribor3m = st.number_input('Enter Euribor 3-month rate:', format="%.3f", step=0.001)
 
 nr_employed = st.number_input('Enter the number of employees:')
 
@@ -60,6 +60,7 @@ input_data = pd.DataFrame({
     'month': [month],
     'duration': [duration],
     'campaign': [campaign],
+    'emp.var.rate' : [emp_var_rate],
     'cons.price.idx': [cons_price_idx],
     'cons.conf.idx': [cons_conf_idx],
     'euribor3m': [euribor3m],
